@@ -45,8 +45,9 @@ export default function Register({ onRegistered }) {
                     onChange={e => setForm({ ...form, password: e.target.value })}
                 />
 
-                <button>Register</button>
+                <button type="submit">Register</button>
             </form>
         </div>
     );
+
 }

@@ -1,5 +1,5 @@
-from models.task import Task
 from extensions import db
+from models.task import Task
 
 
 def get_user_tasks(user_id):

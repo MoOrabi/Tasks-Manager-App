@@ -3,6 +3,7 @@ import { AuthContext } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Tasks from "./pages/Tasks";
+import './App.css';
 
 export default function App() {
   const { token } = useContext(AuthContext);
@@ -12,14 +13,14 @@ export default function App() {
     return showLogin ? (
       <>
         <Login onLoggedIn={() => { }} />
-        <p>
+        <p className="container">
           No account? <button onClick={() => setShowLogin(false)}>Register</button>
         </p>
       </>
     ) : (
       <>
         <Register onRegistered={() => setShowLogin(true)} />
-        <p>
+        <p className="container">
           Already have an account?{" "}
           <button onClick={() => setShowLogin(true)}>Login</button>
         </p>
@@ -27,5 +28,5 @@ export default function App() {
     );
   }
 
-  return <Tasks />;
+  return <Tasks/>
 }

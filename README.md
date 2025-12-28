@@ -57,13 +57,9 @@ CREATE DATABASE tasks_db;
 In backend/config.py, edit:
 
 SQLALCHEMY_DATABASE_URI = "mysql://username:password@localhost:3306/tasks_db"
+Create .env file and add your config values there
 
-
-(or PyMySQL):
-
-mysql+pymysql://username:password@localhost:3306/tasks_db
-
-▶️ 3.5 Run backend
+▶️ 3.5 Run backend (Locally)
 python app.py
 
 
@@ -71,7 +67,7 @@ Backend runs at:
 
 http://localhost/5000
 
-🌐 4. Frontend Setup (React)
+🌐 4. Frontend Setup (Locally)
 📥 4.1 Install dependencies
 cd frontend
 npm install
@@ -95,7 +91,48 @@ If backend URL changes, update:
 
 frontend/src/api/client.js
 
-🔐 6. API Endpoints
+ 6. Docker Setup & Run
+
+Prerequisites
+
+Install Docker and Docker Compose
+
+Environment variables
+Make sure your .env file exists in the backend folder — it will be loaded automatically by Docker.
+
+Build & Run using Docker Compose
+
+From the project root:
+
+docker-compose up --build
+
+
+This will:
+
+Build the Flask backend image
+
+Build the React frontend image
+
+Start a MySQL database container
+
+Services & Ports
+
+Backend API → http://localhost:5000
+
+Frontend → http://localhost:3000
+
+MySQL → port 3306 (internal only unless mapped)
+
+Stopping containers
+
+docker-compose down
+
+
+To remove volumes (wipe DB):
+
+docker-compose down -v
+
+🔐 7. API Endpoints
 Auth
 Method	Endpoint	Description
 POST	/auth/register	Register new user
@@ -111,7 +148,7 @@ GET	/tasks/	List user’s tasks
 POST	/tasks/	Create task
 PUT	/tasks/:id	Update task
 DELETE	/tasks/:id	Delete task
-🧪 7. Example Payloads
+🧪 8. Example Payloads
 Register
 {
   "name": "John",
@@ -131,7 +168,7 @@ Create Task
   "status": "pending"
 }
 
-📌 8. Assumptions Made
+📌 9. Assumptions Made
 
 Users should only access their own tasks (enforced in backend).
 

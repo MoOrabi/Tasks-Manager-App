@@ -1,5 +1,6 @@
-from extensions import db
 from passlib.context import CryptContext
+
+from extensions import db
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 

@@ -3,22 +3,25 @@ import { login } from "../api/auth";
 import { AuthContext } from "../context/AuthContext";
 
 export default function Login({ onLoggedIn }) {
-    const { login: saveToken } = useContext(AuthContext);
-    const [form, setForm] = useState({ email: "", password: "" });
-    const [error, setError] = useState("");
+  const { login: saveToken } = useContext(AuthContext);
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        setError("");
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
 
-        try {
-            const res = await login(form);
-            saveToken(res.access_token);
-            onLoggedIn();
-        } catch (err) {
-            setError(err.message);
-        }
+    try {
+      const res = await login(form);
+      saveToken(res.access_token);
+      onLoggedIn();
+    } catch (err) {
+        console.log(err);
+        console.log(err.message);
+        
+      setError(err.message);
     }
+  }
 
     return (
         <div className="container">
@@ -40,8 +43,9 @@ export default function Login({ onLoggedIn }) {
                     onChange={e => setForm({ ...form, password: e.target.value })}
                 />
 
-                <button>Login</button>
+                <button type="submit">Login</button>
             </form>
         </div>
     );
+
 }

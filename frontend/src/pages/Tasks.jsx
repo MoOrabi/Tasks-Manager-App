@@ -6,8 +6,10 @@ export default function Tasks() {
     const { logout } = useContext(AuthContext);
     const [tasks, setTasks] = useState([]);
     const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    
 
     async function load() {
         try {
@@ -25,9 +27,18 @@ export default function Tasks() {
 
     async function handleCreate(e) {
         e.preventDefault();
-        await createTask({ title });
-        setTitle("");
-        load();
+        setError("");
+        try {
+            const res = await createTask({title, description});
+            setTitle("");
+            setDescription("");
+            load();
+        } catch (err) {
+            console.log(err);
+            console.log(err.message);
+            
+            setError(err.message)
+        }
     }
 
     async function handleUpdate(id, status) {
@@ -41,27 +52,42 @@ export default function Tasks() {
     }
 
     if (loading) return <p>Loading…</p>;
-    if (error) return <p>{error}</p>;
-
+    
     return (
         <div className="container">
             <h2>My Tasks</h2>
 
-            <button onClick={logout}>Logout</button>
+            <div className="column-container">
+                <button className="logout-btn" onClick={logout}>Logout</button>
+                {error && <p style={{ color: "red" }}>{error}</p>}
 
-            <form onSubmit={handleCreate}>
-                <input
-                    value={title}
-                    placeholder="Task title"
-                    onChange={e => setTitle(e.target.value)}
-                />
-                <button>Add Task</button>
-            </form>
+                <form onSubmit={handleCreate}>
+                    <input
+                        name="title"
+                        value={title}
+                        placeholder="Task title"
+                        onChange={e => setTitle(e.target.value)}
+                    />
+                    <input
+                        name="description"
+                        value={description}
+                        placeholder="Task description"
+                        onChange={e => setDescription(e.target.value)}
+                    />
+                    <button type="submit">Add Task</button>
+                </form>
+            </div>
+            
 
             <ul>
                 {tasks.map(t => (
                     <li key={t.id}>
-                        <strong>{t.title}</strong> — {t.status}
+                        <div className="task-top">
+                            <strong>{t.title}</strong>
+                            <span className={`status ${t.status}`}>{t.status}</span>
+                        </div>
+
+                        <p>{t.description}</p>
 
                         <select
                             value={t.status}
@@ -72,10 +98,13 @@ export default function Tasks() {
                             <option value="done">done</option>
                         </select>
 
-                        <button onClick={() => handleDelete(t.id)}>Delete</button>
+                        <button className="danger" onClick={() => handleDelete(t.id)}>
+                            Delete
+                        </button>
                     </li>
                 ))}
             </ul>
         </div>
     );
+
 }

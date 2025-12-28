@@ -4,6 +4,6 @@ flask_migrate
 flask_jwt_extended
 passlib[argon2]
 argon2_cffi
-mysqlclient
+mysql-connector-python
 flask-cors
 python-dotenv

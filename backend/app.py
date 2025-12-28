@@ -5,10 +5,11 @@ from extensions import db, jwt
 from routes.auth_routes import auth_bp
 from routes.task_routes import task_bp
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    cors = CORS(app)
+    CORS(app)
 
     db.init_app(app)
     jwt.init_app(app)

@@ -28,7 +28,13 @@ def list_tasks():
 def create():
     user_id = get_jwt_identity()
     data = request.json
-    task = create_task(user_id, data["title"], data.get("description"))
+    title = data.get("title")
+    description = data.get("description")
+
+    if not title or not title.strip() or not description or not description.strip():
+        return jsonify({"message": "Task Title and description shouldn't be empty"}), 400
+
+    task = create_task(user_id, title, description)
     return jsonify({"message": "Task created", "id": task.id}), 201
 
 
