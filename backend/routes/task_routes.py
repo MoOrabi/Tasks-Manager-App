@@ -1,0 +1,50 @@
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from models.task import Task
+from services.task_service import *
+
+task_bp = Blueprint("tasks", __name__, url_prefix="/tasks")
+
+
+@task_bp.get("/")
+@jwt_required()
+def list_tasks():
+    user_id = get_jwt_identity()
+    tasks = get_user_tasks(user_id)
+
+    return jsonify([
+        {
+            "id": t.id,
+            "title": t.title,
+            "description": t.description,
+            "status": t.status,
+            "created_at": t.created_at
+        } for t in tasks
+    ])
+
+
+@task_bp.post("/")
+@jwt_required()
+def create():
+    user_id = get_jwt_identity()
+    data = request.json
+    task = create_task(user_id, data["title"], data.get("description"))
+    return jsonify({"message": "Task created", "id": task.id}), 201
+
+
+@task_bp.put("/<int:task_id>")
+@jwt_required()
+def update(task_id):
+    user_id = get_jwt_identity()
+    task = Task.query.filter_by(id=task_id, user_id=user_id).first_or_404()
+    update_task(task, request.json)
+    return jsonify({"message": "Task updated"})
+
+
+@task_bp.delete("/<int:task_id>")
+@jwt_required()
+def delete(task_id):
+    user_id = get_jwt_identity()
+    task = Task.query.filter_by(id=task_id, user_id=user_id).first_or_404()
+    delete_task(task)
+    return jsonify({"message": "Task deleted"})

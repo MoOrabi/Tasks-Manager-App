@@ -1,0 +1,18 @@
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 16px;
+}
+
+input,
+select,
+button {
+  display: block;
+  margin: 8px 0;
+  padding: 8px;
+  width: 100%;
+}
+
+button {
+  cursor: pointer;
+}
