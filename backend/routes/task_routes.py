@@ -1,26 +1,19 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models.task import Task
+
 from services.task_service import *
 
 task_bp = Blueprint("tasks", __name__, url_prefix="/tasks")
 
 
-@task_bp.get("/")
+@task_bp.get("")
 @jwt_required()
 def list_tasks():
     user_id = get_jwt_identity()
-    tasks = get_user_tasks(user_id)
+    page = int(request.args.get("page", 1))
+    per_page = int(request.args.get("per_page", 10))
 
-    return jsonify([
-        {
-            "id": t.id,
-            "title": t.title,
-            "description": t.description,
-            "status": t.status,
-            "created_at": t.created_at
-        } for t in tasks
-    ])
+    return jsonify(get_user_tasks(user_id, page, per_page))
 
 
 @task_bp.post("/")

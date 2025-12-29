@@ -1,8 +1,10 @@
 import { useState, useContext } from "react";
 import { login } from "../api/auth";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-export default function Login({ onLoggedIn }) {
+export default function Login() {
+  const navigate = useNavigate();
   const { login: saveToken } = useContext(AuthContext);
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -14,7 +16,7 @@ export default function Login({ onLoggedIn }) {
     try {
       const res = await login(form);
       saveToken(res.access_token);
-      onLoggedIn();
+      navigate("/");
     } catch (err) {
         console.log(err);
         console.log(err.message);

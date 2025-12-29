@@ -1,7 +1,7 @@
 import { api } from "./client";
 
-export function getTasks() {
-    return api("/tasks/");
+export function getTasks(page = 1, per_page = 5) {
+    return api(`/tasks?page=${page}&per_page=${per_page}`);
 }
 
 export function createTask(data) {

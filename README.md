@@ -28,7 +28,7 @@ project/
 
 Make sure you have installed:
 
-Python 3.13+
+Python 3.11+
 
 Node.js + npm
 
@@ -170,16 +170,11 @@ Create Task
 
 📌 9. Assumptions Made
 
-Users should only access their own tasks (enforced in backend).
-
-Passwords are hashed, never stored in plain text.
-
-JWT stored in localStorage (simple approach for learning).
-
-This app is designed for learning / demo purposes, not production.
-
 No refresh tokens — access token expires based on default config.
 
 API is intentionally simple and not versioned (/api/v1 skipped).
 
 Basic UI — no advanced design or CSS framework.
+
+10. Examples from UI
+

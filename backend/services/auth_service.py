@@ -1,5 +1,5 @@
-from models.user import User
 from extensions import db
+from models.user import User
 
 
 def register_user(name, email, password):

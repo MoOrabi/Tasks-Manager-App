@@ -14,6 +14,10 @@ export async function api(path, options = {}) {
     });
 
     if (!res.ok) {
+        if (res.status === 401 || res.status === 422) {
+            window.location = "/login"; // redirect
+            return;
+        }
         throw new Error((await res.json()).message || "Request failed");
     }
 

@@ -8,8 +8,8 @@ from routes.task_routes import task_bp
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
     CORS(app)
+    app.config.from_object(Config)
 
     db.init_app(app)
     jwt.init_app(app)

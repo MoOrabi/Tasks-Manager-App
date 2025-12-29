@@ -1,5 +1,9 @@
-from extensions import db
 from datetime import datetime
+
+from flask import jsonify
+
+from extensions import db, jwt
+
 
 class Task(db.Model):
     __tablename__ = "tasks"
@@ -11,3 +15,12 @@ class Task(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "status": self.status,
+            "created_at": self.created_at.isoformat() if self.created_at else None
+        }

@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { getTasks, createTask, updateTask, deleteTask } from "../api/tasks";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Tasks() {
     const { logout } = useContext(AuthContext);
@@ -9,13 +10,18 @@ export default function Tasks() {
     const [description, setDescription] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    
+    const [page, setPage] = useState(1);
+    const [perPage] = useState(5);
+    const [meta, setMeta] = useState(null);
+    const navigate = useNavigate();
+
 
     async function load() {
         try {
             setLoading(true);
-            const data = await getTasks();
-            setTasks(data);
+            const data = await getTasks(page, perPage);
+            setTasks(data.items);
+            setMeta(data);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -23,7 +29,9 @@ export default function Tasks() {
         }
     }
 
-    useEffect(() => { load(); }, []);
+    useEffect(() => {
+        load();
+    }, [page]);
 
     async function handleCreate(e) {
         e.preventDefault();
@@ -58,7 +66,10 @@ export default function Tasks() {
             <h2>My Tasks</h2>
 
             <div className="column-container">
-                <button className="logout-btn" onClick={logout}>Logout</button>
+                <button className="logout-btn" onClick={() => {
+                    logout();
+                    navigate("/login");
+                }}>Logout</button>
                 {error && <p style={{ color: "red" }}>{error}</p>}
 
                 <form onSubmit={handleCreate}>
@@ -104,6 +115,27 @@ export default function Tasks() {
                     </li>
                 ))}
             </ul>
+            {meta && (
+                <div className="pagination">
+                    <button
+                        disabled={!meta.has_prev}
+                        onClick={() => setPage(p => p - 1)}
+                    >
+                        Previous
+                    </button>
+
+                    <span>
+                        Page {meta.page} of {meta.pages}
+                    </span>
+
+                    <button
+                        disabled={!meta.has_next}
+                        onClick={() => setPage(p => p + 1)}
+                    >
+                        Next
+                    </button>
+                </div>
+            )}
         </div>
     );
 
