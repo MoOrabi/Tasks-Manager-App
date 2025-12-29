@@ -178,3 +178,5 @@ Basic UI — no advanced design or CSS framework.
 
 10. Examples from UI
 
+![register](https://github.com/user-attachments/assets/f8975486-ee9c-4a68-94df-331318105168)
+
